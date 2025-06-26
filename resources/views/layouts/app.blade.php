@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,11 +21,11 @@
     <!-- Custom Styles -->
     <style>
         :root {
-            --usmp-primary: #1e40af;
-            --usmp-secondary: #0f172a;
-            --usmp-accent: #3b82f6;
-            --usmp-light: #f8fafc;
-            --usmp-dark: #0f172a;
+            --UNMSM-primary: #1e40af;
+            --UNMSM-secondary: #0f172a;
+            --UNMSM-accent: #3b82f6;
+            --UNMSM-light: #f8fafc;
+            --UNMSM-dark: #0f172a;
             --sidebar-width: 280px;
         }
 
@@ -41,16 +42,16 @@
             left: 0;
             height: 100vh;
             width: var(--sidebar-width);
-            background: linear-gradient(135deg, var(--usmp-primary) 0%, var(--usmp-secondary) 100%);
+            background: linear-gradient(135deg, var(--UNMSM-primary) 0%, var(--UNMSM-secondary) 100%);
             color: white;
             z-index: 1050;
             transition: all 0.3s ease;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar-brand {
             padding: 1.5rem 1.25rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             gap: 0.75rem;
@@ -78,7 +79,7 @@
         }
 
         .nav-link {
-            color: rgba(255,255,255,0.8);
+            color: rgba(255, 255, 255, 0.8);
             padding: 0.75rem 1rem;
             border-radius: 8px;
             display: flex;
@@ -89,9 +90,10 @@
             font-weight: 500;
         }
 
-        .nav-link:hover, .nav-link.active {
+        .nav-link:hover,
+        .nav-link.active {
             color: white;
-            background-color: rgba(255,255,255,0.1);
+            background-color: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
         }
 
@@ -116,12 +118,12 @@
             display: flex;
             justify-content: between;
             align-items: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .page-title {
             margin: 0;
-            color: var(--usmp-secondary);
+            color: var(--UNMSM-secondary);
             font-weight: 600;
             font-size: 1.5rem;
         }
@@ -136,7 +138,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--usmp-primary), var(--usmp-accent));
+            background: linear-gradient(135deg, var(--UNMSM-primary), var(--UNMSM-accent));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -172,12 +174,12 @@
         .card {
             border: none;
             border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             transition: all 0.2s ease;
         }
 
         .card:hover {
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         .card-header {
@@ -186,12 +188,12 @@
             border-radius: 12px 12px 0 0 !important;
             padding: 1.25rem 1.5rem;
             font-weight: 600;
-            color: var(--usmp-secondary);
+            color: var(--UNMSM-secondary);
         }
 
         /* Buttons */
         .btn-primary {
-            background: linear-gradient(135deg, var(--usmp-primary), var(--usmp-accent));
+            background: linear-gradient(135deg, var(--UNMSM-primary), var(--UNMSM-accent));
             border: none;
             border-radius: 8px;
             padding: 0.625rem 1.25rem;
@@ -205,22 +207,24 @@
         }
 
         .btn-outline-primary {
-            border: 2px solid var(--usmp-primary);
-            color: var(--usmp-primary);
+            border: 2px solid var(--UNMSM-primary);
+            color: var(--UNMSM-primary);
             border-radius: 8px;
             font-weight: 500;
         }
 
         /* Form Controls */
-        .form-control, .form-select {
+        .form-control,
+        .form-select {
             border: 2px solid #e2e8f0;
             border-radius: 8px;
             padding: 0.75rem 1rem;
             transition: all 0.2s ease;
         }
 
-        .form-control:focus, .form-select:focus {
-            border-color: var(--usmp-accent);
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--UNMSM-accent);
             box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.15);
         }
 
@@ -268,23 +272,33 @@
         }
 
         /* Utilities */
-        .text-usmp-primary { color: var(--usmp-primary) !important; }
-        .bg-usmp-primary { background-color: var(--usmp-primary) !important; }
-        .border-usmp-primary { border-color: var(--usmp-primary) !important; }
+        .text-UNMSM-primary {
+            color: var(--UNMSM-primary) !important;
+        }
+
+        .bg-UNMSM-primary {
+            background-color: var(--UNMSM-primary) !important;
+        }
+
+        .border-UNMSM-primary {
+            border-color: var(--UNMSM-primary) !important;
+        }
 
         /* Loading Animation */
         .loading-spinner {
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
+            border: 3px solid rgba(255, 255, 255, .3);
             border-radius: 50%;
             border-top-color: #fff;
             animation: spin 1s ease-in-out infinite;
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* Stats Cards */
@@ -292,7 +306,7 @@
             background: white;
             border-radius: 12px;
             padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
             gap: 1rem;
@@ -301,7 +315,7 @@
 
         .stat-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         .stat-icon {
@@ -319,7 +333,7 @@
             margin: 0;
             font-size: 1.75rem;
             font-weight: 700;
-            color: var(--usmp-secondary);
+            color: var(--UNMSM-secondary);
         }
 
         .stat-content p {
@@ -331,61 +345,74 @@
 
     @stack('styles')
 </head>
+
 <body>
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
-        <div class="sidebar-brand">
-            <div class="d-flex align-items-center justify-content-center bg-white rounded" style="width: 40px; height: 40px;">
+        <a href="{{ route('home') }}" class="sidebar-brand text-decoration-none text-white">
+            <div class="d-flex align-items-center justify-content-center bg-white rounded"
+                style="width: 40px; height: 40px;">
                 <i class="bi bi-book text-primary fs-4"></i>
             </div>
             <div>
-                <h4>BiblioUSMP</h4>
+                <h4>Biblioteca UNMSM</h4>
                 <small style="opacity: 0.8;">Sistema de Biblioteca</small>
             </div>
-        </div>
+        </a>
 
         <ul class="sidebar-nav">
             @auth
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('books.index') ? 'active' : '' }}" href="{{ route('books.index') }}">
+                <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">
                     <i class="bi bi-speedometer2"></i>
                     Dashboard
                 </a>
             </li>
-            @endauth
-
+            @if(auth()->user()->isAdmin())
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}" href="{{ route('books.index') }}">
-                    <i class="bi bi-book"></i>
-                    Libros
-                </a>
-            </li>
-
-            @auth
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}" href="{{ route('categories.index') }}">
+                <a class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}"
+                    href="{{ route('categories.index') }}">
                     <i class="bi bi-tags"></i>
                     Categorías
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('loans.*') ? 'active' : '' }}" href="{{ route('loans.index') }}">
-                    <i class="bi bi-arrow-left-right"></i>
-                    Préstamos
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">
+                <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}"
+                    href="{{ route('users.index') }}">
                     <i class="bi bi-people"></i>
                     Usuarios
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}" href="{{ route('reports.index') }}">
+                <a class="nav-link {{ request()->routeIs('loans.*') ? 'active' : '' }}"
+                    href="{{ route('loans.index') }}">
+                    <i class="bi bi-arrow-left-right"></i>
+                    Préstamos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}"
+                    href="{{ route('reports.index') }}">
                     <i class="bi bi-graph-up"></i>
                     Reportes
                 </a>
             </li>
+            @elseif(auth()->user()->isStudent())
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}"
+                    href="{{ route('books.index') }}">
+                    <i class="bi bi-book"></i>
+                    Libros
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('loans.*') ? 'active' : '' }}"
+                    href="{{ route('loans.index') }}">
+                    <i class="bi bi-arrow-left-right"></i>
+                    Préstamos
+                </a>
+            </li>
+            @endif
 
             <hr style="margin: 1rem; border-color: rgba(255,255,255,0.2);">
 
@@ -432,22 +459,27 @@
                 <h1 class="page-title">@yield('page_title', 'Dashboard')</h1>
             </div>
 
-            <div class="user-menu">
+            <div class="user-menu ms-auto">
                 @auth
                 <div class="dropdown">
                     <div class="user-avatar" data-bs-toggle="dropdown" aria-expanded="false">
                         {{ auth()->user()->name ? substr(auth()->user()->name, 0, 1) : 'U' }}
                     </div>
                     <ul class="dropdown-menu">
-                        <li><h6 class="dropdown-header">{{ auth()->user()->name ?? 'Usuario' }}</h6></li>
+                        <li>
+                            <h6 class="dropdown-header">{{ auth()->user()->name ?? 'Usuario' }}</h6>
+                        </li>
                         <li><a class="dropdown-item" href="{{ route('profile.edit') }}">
-                            <i class="bi bi-person me-2"></i>Mi Perfil
-                        </a></li>
-                        <li><hr class="dropdown-divider"></li>
+                                <i class="bi bi-person me-2"></i>Mi Perfil
+                            </a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <a class="dropdown-item" href="#" onclick="event.preventDefault(); this.closest('form').submit();">
+                                <a class="dropdown-item" href="#"
+                                    onclick="event.preventDefault(); this.closest('form').submit();">
                                     <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
                                 </a>
                             </form>
@@ -471,32 +503,32 @@
         <div class="content-area">
             <!-- Success/Error Messages -->
             @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="bi bi-check-circle me-2"></i>
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             @endif
 
             @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-circle me-2"></i>
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-circle me-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             @endif
 
             @if ($errors->any())
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-circle me-2"></i>
-                    <strong>Por favor corrige los siguientes errores:</strong>
-                    <ul class="mb-0 mt-2">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-circle me-2"></i>
+                <strong>Por favor corrige los siguientes errores:</strong>
+                <ul class="mb-0 mt-2">
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             @endif
 
             <!-- Page Content -->
@@ -559,4 +591,5 @@
 
     @stack('scripts')
 </body>
+
 </html>

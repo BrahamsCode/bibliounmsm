@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     userSelect.addEventListener('change', updateStudentInfo);
-    updateStudentInfo(); // Inicializa si hay valor seleccionado
+    updateStudentInfo();
 });
 </script>
 @endpush

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,27 @@ Route::middleware(['auth'])->group(function () {
     */
     Route::resource('loans', LoanController::class);
     Route::post('/loans/{loan}/return', [LoanController::class, 'return'])->name('loans.return');
+    Route::post('/loans/{loan}/extend', [LoanController::class, 'extend'])->name('loans.extend');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Módulo de Reportes (Solo Admin/Bibliotecarios)
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/', [ReportController::class, 'index'])->name('index');
+
+        // Reportes específicos
+        Route::get('/loans', [ReportController::class, 'loans'])->name('loans');
+        Route::get('/popular-books', [ReportController::class, 'popularBooks'])->name('popular-books');
+        Route::get('/active-users', [ReportController::class, 'activeUsers'])->name('active-users');
+        Route::get('/categories', [ReportController::class, 'categories'])->name('categories');
+        Route::get('/overdue-loans', [ReportController::class, 'overdueLoans'])->name('overdue-loans');
+        Route::get('/inventory', [ReportController::class, 'inventory'])->name('inventory');
+
+        // Exportación de reportes
+        Route::get('/export', [ReportController::class, 'export'])->name('export');
+    });
 
     /*
     |--------------------------------------------------------------------------
@@ -67,10 +89,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/users', function() {
         return redirect()->route('books.index')->with('info', 'Módulo de usuarios en desarrollo');
     })->name('users.index');
-
-    Route::get('/reports', function() {
-        return redirect()->route('books.index')->with('info', 'Módulo de reportes en desarrollo');
-    })->name('reports.index');
 
     /*
     |--------------------------------------------------------------------------
@@ -87,6 +105,7 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/api/stats', [HomeController::class, 'stats'])->name('api.stats');
+    Route::get('/api/loans/stats', [LoanController::class, 'getStats'])->name('api.loans.stats');
 
 });
 

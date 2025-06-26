@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Nuevo Libro - BiblioUNMSM')
+@section('title', 'Nuevo Libro - Biblioteca UNMSM')
 
 @section('content')
 <div class="container py-4">
@@ -26,9 +26,9 @@
                                 <div class="mb-3">
                                     <label for="title" class="form-label">Título *</label>
                                     <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                           id="title" name="title" value="{{ old('title') }}" required>
+                                        id="title" name="title" value="{{ old('title') }}" required>
                                     @error('title')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -36,9 +36,9 @@
                                 <div class="mb-3">
                                     <label for="author" class="form-label">Autor *</label>
                                     <input type="text" class="form-control @error('author') is-invalid @enderror"
-                                           id="author" name="author" value="{{ old('author') }}" required>
+                                        id="author" name="author" value="{{ old('author') }}" required>
                                     @error('author')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -49,9 +49,9 @@
                                 <div class="mb-3">
                                     <label for="isbn" class="form-label">ISBN *</label>
                                     <input type="text" class="form-control @error('isbn') is-invalid @enderror"
-                                           id="isbn" name="isbn" value="{{ old('isbn') }}" required>
+                                        id="isbn" name="isbn" value="{{ old('isbn') }}" required>
                                     @error('isbn')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -59,19 +59,18 @@
                                 <div class="mb-3">
                                     <label for="category_id" class="form-label">Categoría *</label>
                                     <select class="form-select @error('category_id') is-invalid @enderror"
-                                            id="category_id" name="category_id" required>
+                                        id="category_id" name="category_id" required>
                                         <option value="">Seleccione una categoría</option>
                                         @foreach($categories as $category)
-                                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                                {{ $category->name }}
-                                            </option>
+                                        <option value="{{ $category->id }}" {{ old('category_id')==$category->id ?
+                                            'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
                                         @endforeach
                                     </select>
                                     @error('category_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
                         </div>
-                        
-

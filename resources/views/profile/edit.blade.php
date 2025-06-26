@@ -16,7 +16,8 @@
                 <div class="card-body">
                     <div class="alert alert-info">
                         <i class="bi bi-info-circle me-2"></i>
-                        <strong>Módulo en Desarrollo:</strong> La funcionalidad de edición de perfil estará disponible próximamente.
+                        <strong>Módulo en Desarrollo:</strong> La funcionalidad de edición de perfil estará disponible
+                        próximamente.
                     </div>
 
                     <div class="row">
@@ -74,17 +75,17 @@
 </div>
 
 <style>
-.user-avatar-large {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--usmp-primary), var(--usmp-accent));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 2.5rem;
-    font-weight: 700;
-}
+    .user-avatar-large {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--UNMSM-primary), var(--UNMSM-accent));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2.5rem;
+        font-weight: 700;
+    }
 </style>
 @endsection

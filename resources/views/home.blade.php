@@ -10,15 +10,15 @@
                 <div class="card-header">
                     <h5 class="mb-0">
                         <i class="bi bi-house-door me-2"></i>
-                        ¡Bienvenido al Sistema BiblioUSMP!
+                        ¡Bienvenido al Sistema Biblioteca UNMSM!
                     </h5>
                 </div>
 
                 <div class="card-body">
                     @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
                     @endif
 
                     <div class="welcome-content">
@@ -26,7 +26,8 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <h4 class="text-primary mb-3">¡Hola, {{ Auth::user()->name }}!</h4>
-                                <p class="lead">Tu registro ha sido exitoso. Ahora puedes acceder a todos los servicios de la biblioteca digital de la Universidad San Martín de Porres.</p>
+                                <p class="lead">Tu registro ha sido exitoso. Ahora puedes acceder a todos los servicios
+                                    de la biblioteca digital de la Universidad San Martín de Porres.</p>
 
                                 <div class="features-list mb-4">
                                     <h6 class="fw-semibold mb-3">¿Qué puedes hacer ahora?</h6>
@@ -70,7 +71,7 @@
                                         <h6 class="fw-semibold">{{ Auth::user()->name }}</h6>
                                         <p class="text-muted small mb-2">{{ Auth::user()->email }}</p>
                                         @if(Auth::user()->student_code)
-                                            <span class="badge bg-primary">{{ Auth::user()->student_code }}</span>
+                                        <span class="badge bg-primary">{{ Auth::user()->student_code }}</span>
                                         @endif
                                     </div>
                                 </div>
@@ -82,7 +83,8 @@
                                 <div class="guest-content py-5">
                                     <i class="bi bi-shield-check display-1 text-primary mb-4"></i>
                                     <h3 class="text-primary mb-3">Acceso Restringido</h3>
-                                    <p class="lead text-muted mb-4">Esta página requiere autenticación. Por favor, inicia sesión para continuar.</p>
+                                    <p class="lead text-muted mb-4">Esta página requiere autenticación. Por favor,
+                                        inicia sesión para continuar.</p>
 
                                     <div class="action-buttons">
                                         <a href="{{ route('login') }}" class="btn btn-primary btn-lg me-3">
@@ -162,7 +164,8 @@
                     </h6>
                 </div>
                 <div class="card-body text-center">
-                    <p class="text-muted">Para acceder a todas las funcionalidades, necesitas estar registrado en el sistema.</p>
+                    <p class="text-muted">Para acceder a todas las funcionalidades, necesitas estar registrado en el
+                        sistema.</p>
 
                     <div class="d-grid gap-2">
                         <a href="{{ route('register') }}" class="btn btn-primary">
@@ -193,33 +196,34 @@
                 </div>
                 <div class="card-body">
                     @if($recentBooks->count() > 0)
-                        <div class="row g-3">
-                            @foreach($recentBooks->take(4) as $book)
-                            <div class="col-md-3">
-                                <div class="book-preview">
-                                    <div class="book-cover-small">
-                                        <img src="{{ $book->cover_image ?? 'https://via.placeholder.com/80x120/1e40af/ffffff?text=USMP' }}"
-                                             alt="{{ $book->title }}" class="img-fluid rounded">
-                                    </div>
-                                    <div class="book-info mt-2">
-                                        <h6 class="small fw-semibold mb-1">{{ Str::limit($book->title, 30) }}</h6>
-                                        <p class="small text-muted mb-1">{{ Str::limit($book->author, 25) }}</p>
-                                        <span class="badge bg-{{ $book->isAvailable() ? 'success' : 'secondary' }} badge-sm">
-                                            {{ $book->isAvailable() ? 'Disponible' : 'No disponible' }}
-                                        </span>
-                                    </div>
+                    <div class="row g-3">
+                        @foreach($recentBooks->take(4) as $book)
+                        <div class="col-md-3">
+                            <div class="book-preview">
+                                <div class="book-cover-small">
+                                    <img src="{{ $book->cover_image ?? 'https://via.placeholder.com/80x120/1e40af/ffffff?text=UNMSM' }}"
+                                        alt="{{ $book->title }}" class="img-fluid rounded">
+                                </div>
+                                <div class="book-info mt-2">
+                                    <h6 class="small fw-semibold mb-1">{{ Str::limit($book->title, 30) }}</h6>
+                                    <p class="small text-muted mb-1">{{ Str::limit($book->author, 25) }}</p>
+                                    <span
+                                        class="badge bg-{{ $book->isAvailable() ? 'success' : 'secondary' }} badge-sm">
+                                        {{ $book->isAvailable() ? 'Disponible' : 'No disponible' }}
+                                    </span>
                                 </div>
                             </div>
-                            @endforeach
                         </div>
+                        @endforeach
+                    </div>
                     @else
-                        <div class="text-center py-4">
-                            <i class="bi bi-book display-4 text-muted mb-3"></i>
-                            <p class="text-muted">No hay libros disponibles en este momento.</p>
-                            <a href="{{ route('books.index') }}" class="btn btn-primary">
-                                Explorar Catálogo
-                            </a>
-                        </div>
+                    <div class="text-center py-4">
+                        <i class="bi bi-book display-4 text-muted mb-3"></i>
+                        <p class="text-muted">No hay libros disponibles en este momento.</p>
+                        <a href="{{ route('books.index') }}" class="btn btn-primary">
+                            Explorar Catálogo
+                        </a>
+                    </div>
                     @endif
                 </div>
             </div>
@@ -228,69 +232,70 @@
 </div>
 
 <style>
-.user-avatar-xl {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--usmp-primary), var(--usmp-accent));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0 auto;
-    box-shadow: 0 4px 20px rgba(30, 64, 175, 0.3);
-}
-
-.welcome-content {
-    animation: fadeInUp 0.6s ease-out;
-}
-
-.book-preview {
-    text-align: center;
-    padding: 1rem;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-}
-
-.book-preview:hover {
-    background-color: #f8fafc;
-    transform: translateY(-2px);
-}
-
-.book-cover-small {
-    width: 80px;
-    height: 120px;
-    margin: 0 auto;
-    overflow: hidden;
-    border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.book-cover-small img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
+    .user-avatar-xl {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--UNMSM-primary), var(--UNMSM-accent));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0 auto;
+        box-shadow: 0 4px 20px rgba(30, 64, 175, 0.3);
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+
+    .welcome-content {
+        animation: fadeInUp 0.6s ease-out;
     }
-}
 
-.stat-item {
-    transition: all 0.2s ease;
-}
+    .book-preview {
+        text-align: center;
+        padding: 1rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
 
-.stat-item:hover {
-    background-color: #e2e8f0 !important;
-}
+    .book-preview:hover {
+        background-color: #f8fafc;
+        transform: translateY(-2px);
+    }
+
+    .book-cover-small {
+        width: 80px;
+        height: 120px;
+        margin: 0 auto;
+        overflow: hidden;
+        border-radius: 6px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .book-cover-small img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .stat-item {
+        transition: all 0.2s ease;
+    }
+
+    .stat-item:hover {
+        background-color: #e2e8f0 !important;
+    }
 </style>
 @endsection

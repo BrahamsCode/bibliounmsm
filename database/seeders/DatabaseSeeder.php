@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
         // Admin
         User::create([
             'name' => 'Administrador Sistema',
-            'email' => 'admin@bibliotecausmp.edu.pe',
+            'email' => 'admin@bibliotecaunmsm.edu.pe',
             'password' => Hash::make('password123'),
             'student_code' => 'ADM-2025-001',
             'role' => 'admin',
@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
         // Bibliotecario
         User::create([
             'name' => 'María González',
-            'email' => 'bibliotecario@bibliotecausmp.edu.pe',
+            'email' => 'bibliotecario@bibliotecaunmsm.edu.pe',
             'password' => Hash::make('password123'),
             'student_code' => 'LIB-2025-001',
             'role' => 'librarian',
@@ -59,27 +59,27 @@ class DatabaseSeeder extends Seeder
         $students = [
             [
                 'name' => 'Juan Carlos Pérez',
-                'email' => 'juan.perez@usmp.pe',
+                'email' => 'juan.perez@UNMSM.pe',
                 'student_code' => 'EST-2025-001',
             ],
             [
                 'name' => 'Ana María Rodriguez',
-                'email' => 'ana.rodriguez@usmp.pe',
+                'email' => 'ana.rodriguez@UNMSM.pe',
                 'student_code' => 'EST-2025-002',
             ],
             [
                 'name' => 'Carlos Eduardo Silva',
-                'email' => 'carlos.silva@usmp.pe',
+                'email' => 'carlos.silva@UNMSM.pe',
                 'student_code' => 'EST-2025-003',
             ],
             [
                 'name' => 'Lucia Fernanda Torres',
-                'email' => 'lucia.torres@usmp.pe',
+                'email' => 'lucia.torres@UNMSM.pe',
                 'student_code' => 'EST-2025-004',
             ],
             [
                 'name' => 'Miguel Angel Vargas',
-                'email' => 'miguel.vargas@usmp.pe',
+                'email' => 'miguel.vargas@UNMSM.pe',
                 'student_code' => 'EST-2025-005',
             ],
         ];

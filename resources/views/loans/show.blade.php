@@ -28,22 +28,22 @@
                     </h5>
                     <div>
                         @if($loan->status === 'active')
-                            @if($loan->isOverdue())
-                                <span class="badge bg-danger fs-6">
-                                    <i class="bi bi-exclamation-triangle me-1"></i>
-                                    Vencido
-                                </span>
-                            @else
-                                <span class="badge bg-success fs-6">
-                                    <i class="bi bi-clock me-1"></i>
-                                    Activo
-                                </span>
-                            @endif
+                        @if($loan->isOverdue())
+                        <span class="badge bg-danger fs-6">
+                            <i class="bi bi-exclamation-triangle me-1"></i>
+                            Vencido
+                        </span>
                         @else
-                            <span class="badge bg-secondary fs-6">
-                                <i class="bi bi-check-circle me-1"></i>
-                                Devuelto
-                            </span>
+                        <span class="badge bg-success fs-6">
+                            <i class="bi bi-clock me-1"></i>
+                            Activo
+                        </span>
+                        @endif
+                        @else
+                        <span class="badge bg-secondary fs-6">
+                            <i class="bi bi-check-circle me-1"></i>
+                            Devuelto
+                        </span>
                         @endif
                     </div>
                 </div>
@@ -69,20 +69,21 @@
                                 <tr>
                                     <td class="fw-semibold text-muted">Fecha de Vencimiento:</td>
                                     <td>
-                                        <span class="{{ $loan->isOverdue() && $loan->status === 'active' ? 'text-danger fw-bold' : '' }}">
+                                        <span
+                                            class="{{ $loan->isOverdue() && $loan->status === 'active' ? 'text-danger fw-bold' : '' }}">
                                             {{ $loan->due_date->format('d/m/Y') }}
                                         </span>
                                         <br>
                                         <small class="text-muted">
                                             @if($loan->status === 'active')
-                                                @if($loan->isOverdue())
-                                                    <span class="text-danger">
-                                                        <i class="bi bi-exclamation-triangle me-1"></i>
-                                                        Vencido {{ $loan->due_date->diffForHumans() }}
-                                                    </span>
-                                                @else
-                                                    Vence {{ $loan->due_date->diffForHumans() }}
-                                                @endif
+                                            @if($loan->isOverdue())
+                                            <span class="text-danger">
+                                                <i class="bi bi-exclamation-triangle me-1"></i>
+                                                Vencido {{ $loan->due_date->diffForHumans() }}
+                                            </span>
+                                            @else
+                                            Vence {{ $loan->due_date->diffForHumans() }}
+                                            @endif
                                             @endif
                                         </small>
                                     </td>
@@ -104,13 +105,13 @@
                                     <td class="fw-semibold text-muted">Estado:</td>
                                     <td>
                                         @if($loan->status === 'active')
-                                            @if($loan->isOverdue())
-                                                <span class="badge bg-danger">Vencido</span>
-                                            @else
-                                                <span class="badge bg-success">Activo</span>
-                                            @endif
+                                        @if($loan->isOverdue())
+                                        <span class="badge bg-danger">Vencido</span>
                                         @else
-                                            <span class="badge bg-secondary">Devuelto</span>
+                                        <span class="badge bg-success">Activo</span>
+                                        @endif
+                                        @else
+                                        <span class="badge bg-secondary">Devuelto</span>
                                         @endif
                                     </td>
                                 </tr>
@@ -118,9 +119,9 @@
                                     <td class="fw-semibold text-muted">Duración:</td>
                                     <td>
                                         @if($loan->return_date)
-                                            {{ $loan->loan_date->diffInDays($loan->return_date) }} días
+                                        {{ $loan->loan_date->diffInDays($loan->return_date) }} días
                                         @else
-                                            {{ $loan->loan_date->diffInDays(now()) }} días (en curso)
+                                        {{ $loan->loan_date->diffInDays(now()) }} días (en curso)
                                         @endif
                                     </td>
                                 </tr>
@@ -198,8 +199,7 @@
                         <div class="row">
                             <div class="col-md-3 text-center">
                                 <img src="{{ $loan->book->cover_image ?? 'https://via.placeholder.com/150x200/1e40af/ffffff?text=' . urlencode(substr($loan->book->title, 0, 3)) }}"
-                                     alt="{{ $loan->book->title }}"
-                                     class="img-fluid rounded book-cover-detail">
+                                    alt="{{ $loan->book->title }}" class="img-fluid rounded book-cover-detail">
                             </div>
                             <div class="col-md-9">
                                 <table class="table table-borderless">
@@ -207,7 +207,7 @@
                                         <td class="fw-semibold text-muted">Título:</td>
                                         <td>
                                             <a href="{{ route('books.show', $loan->book) }}"
-                                               class="text-decoration-none fw-semibold">
+                                                class="text-decoration-none fw-semibold">
                                                 {{ $loan->book->title }}
                                             </a>
                                         </td>
@@ -262,59 +262,56 @@
                 </div>
                 <div class="card-body">
                     @auth
-                        @if(auth()->user()->isAdmin() || auth()->user()->isLibrarian())
-                            @if($loan->status === 'active')
-                                <!-- Return Book -->
-                                <form action="{{ route('loans.return', $loan) }}"
-                                      method="POST"
-                                      onsubmit="return confirm('¿Confirmar la devolución de este libro?')">
-                                    @csrf
-                                    <button type="submit" class="btn btn-success w-100 mb-2">
-                                        <i class="bi bi-check-circle me-2"></i>
-                                        Marcar como Devuelto
-                                    </button>
-                                </form>
+                    @if(auth()->user()->isAdmin() || auth()->user()->isLibrarian())
+                    @if($loan->status === 'active')
+                    <!-- Return Book -->
+                    <form action="{{ route('loans.return', $loan) }}" method="POST"
+                        onsubmit="return confirm('¿Confirmar la devolución de este libro?')">
+                        @csrf
+                        <button type="submit" class="btn btn-success w-100 mb-2">
+                            <i class="bi bi-check-circle me-2"></i>
+                            Marcar como Devuelto
+                        </button>
+                    </form>
 
-                                <!-- Extend Loan -->
-                                <button type="button"
-                                        class="btn btn-warning w-100 mb-2"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#extendLoanModal">
-                                    <i class="bi bi-calendar-plus me-2"></i>
-                                    Extender Préstamo
-                                </button>
+                    <!-- Extend Loan -->
+                    <button type="button" class="btn btn-warning w-100 mb-2" data-bs-toggle="modal"
+                        data-bs-target="#extendLoanModal">
+                        <i class="bi bi-calendar-plus me-2"></i>
+                        Extender Préstamo
+                    </button>
+                    @endif
+
+                    <!-- Edit Loan -->
+                    <a href="{{ route('loans.index') }}" class="btn btn-outline-primary w-100 mb-2">
+                        <i class="bi bi-arrow-left me-2"></i>
+                        Volver a Préstamos
+                    </a>
+                    @endif
+
+                    @if(auth()->user()->isStudent())
+                    <div class="alert alert-info">
+                        <h6 class="fw-semibold">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Información Importante
+                        </h6>
+                        <ul class="small mb-0">
+                            <li>Cuida el libro durante el período de préstamo</li>
+                            <li>Devuelve antes de la fecha de vencimiento</li>
+                            <li>Contacta a la biblioteca para renovaciones</li>
+                            @if($loan->isOverdue() && $loan->status === 'active')
+                            <li class="text-danger">
+                                <strong>Tu préstamo está vencido. Devuelve el libro lo antes posible.</strong>
+                            </li>
                             @endif
+                        </ul>
+                    </div>
 
-                            <!-- Edit Loan -->
-                            <a href="{{ route('loans.index') }}" class="btn btn-outline-primary w-100 mb-2">
-                                <i class="bi bi-arrow-left me-2"></i>
-                                Volver a Préstamos
-                            </a>
-                        @endif
-
-                        @if(auth()->user()->isStudent())
-                            <div class="alert alert-info">
-                                <h6 class="fw-semibold">
-                                    <i class="bi bi-info-circle me-2"></i>
-                                    Información Importante
-                                </h6>
-                                <ul class="small mb-0">
-                                    <li>Cuida el libro durante el período de préstamo</li>
-                                    <li>Devuelve antes de la fecha de vencimiento</li>
-                                    <li>Contacta a la biblioteca para renovaciones</li>
-                                    @if($loan->isOverdue() && $loan->status === 'active')
-                                        <li class="text-danger">
-                                            <strong>Tu préstamo está vencido. Devuelve el libro lo antes posible.</strong>
-                                        </li>
-                                    @endif
-                                </ul>
-                            </div>
-
-                            <a href="{{ route('loans.index') }}" class="btn btn-primary w-100">
-                                <i class="bi bi-arrow-left me-2"></i>
-                                Volver a Mis Préstamos
-                            </a>
-                        @endif
+                    <a href="{{ route('loans.index') }}" class="btn btn-primary w-100">
+                        <i class="bi bi-arrow-left me-2"></i>
+                        Volver a Mis Préstamos
+                    </a>
+                    @endif
                     @endauth
                 </div>
             </div>
@@ -358,186 +355,187 @@
 
 <!-- Extend Loan Modal -->
 @auth
-    @if((auth()->user()->isAdmin() || auth()->user()->isLibrarian()) && $loan->status === 'active')
-    <div class="modal fade" id="extendLoanModal" tabindex="-1" aria-labelledby="extendLoanModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="{{ route('loans.extend', $loan) }}" method="POST">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="extendLoanModalLabel">
-                            <i class="bi bi-calendar-plus me-2"></i>
-                            Extender Préstamo
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+@if((auth()->user()->isAdmin() || auth()->user()->isLibrarian()) && $loan->status === 'active')
+<div class="modal fade" id="extendLoanModal" tabindex="-1" aria-labelledby="extendLoanModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('loans.extend', $loan) }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="extendLoanModalLabel">
+                        <i class="bi bi-calendar-plus me-2"></i>
+                        Extender Préstamo
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="loan-summary mb-3">
+                        <h6 class="fw-semibold">Préstamo a extender:</h6>
+                        <p class="text-primary mb-1">{{ $loan->book->title }}</p>
+                        <p class="text-muted small">Estudiante: {{ $loan->user->name }}</p>
+                        <p class="text-muted small">Vencimiento actual: {{ $loan->due_date->format('d/m/Y') }}</p>
                     </div>
-                    <div class="modal-body">
-                        <div class="loan-summary mb-3">
-                            <h6 class="fw-semibold">Préstamo a extender:</h6>
-                            <p class="text-primary mb-1">{{ $loan->book->title }}</p>
-                            <p class="text-muted small">Estudiante: {{ $loan->user->name }}</p>
-                            <p class="text-muted small">Vencimiento actual: {{ $loan->due_date->format('d/m/Y') }}</p>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="new_due_date" class="form-label">Nueva Fecha de Vencimiento</label>
-                            <input type="date"
-                                   class="form-control"
-                                   id="new_due_date"
-                                   name="new_due_date"
-                                   min="{{ $loan->due_date->addDay()->format('Y-m-d') }}"
-                                   value="{{ $loan->due_date->addDays(14)->format('Y-m-d') }}"
-                                   required>
-                            <div class="form-text">
-                                La nueva fecha debe ser posterior al vencimiento actual
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="extension_reason" class="form-label">Motivo de la extensión</label>
-                            <textarea class="form-control"
-                                      id="extension_reason"
-                                      name="extension_reason"
-                                      rows="3"
-                                      placeholder="Razón para extender el préstamo..."></textarea>
-                        </div>
-
-                        <div class="alert alert-warning">
-                            <small>
-                                <i class="bi bi-exclamation-triangle me-1"></i>
-                                <strong>Nota:</strong> Solo se permite una extensión por préstamo.
-                                Verifica que no haya otros estudiantes esperando este libro.
-                            </small>
+                    <div class="mb-3">
+                        <label for="new_due_date" class="form-label">Nueva Fecha de Vencimiento</label>
+                        <input type="date" class="form-control" id="new_due_date" name="new_due_date"
+                            min="{{ $loan->due_date->addDay()->format('Y-m-d') }}"
+                            value="{{ $loan->due_date->addDays(14)->format('Y-m-d') }}" required>
+                        <div class="form-text">
+                            La nueva fecha debe ser posterior al vencimiento actual
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            Cancelar
-                        </button>
-                        <button type="submit" class="btn btn-warning">
-                            <i class="bi bi-check-circle me-2"></i>
-                            Extender Préstamo
-                        </button>
+
+                    <div class="mb-3">
+                        <label for="extension_reason" class="form-label">Motivo de la extensión</label>
+                        <textarea class="form-control" id="extension_reason" name="extension_reason" rows="3"
+                            placeholder="Razón para extender el préstamo..."></textarea>
                     </div>
-                </form>
-            </div>
+
+                    <div class="alert alert-warning">
+                        <small>
+                            <i class="bi bi-exclamation-triangle me-1"></i>
+                            <strong>Nota:</strong> Solo se permite una extensión por préstamo.
+                            Verifica que no haya otros estudiantes esperando este libro.
+                        </small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="bi bi-check-circle me-2"></i>
+                        Extender Préstamo
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
-    @endif
+</div>
+@endif
 @endauth
 
 <style>
-.user-avatar-large {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--usmp-primary), var(--usmp-accent));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 2rem;
-    font-weight: 700;
-    margin: 0 auto;
-    box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
-}
-
-.book-cover-detail {
-    max-width: 150px;
-    max-height: 200px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-}
-
-.card {
-    border: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    border-radius: 12px;
-}
-
-.table-borderless td {
-    padding: 0.5rem 0;
-    border: none;
-}
-
-.loan-summary {
-    border-left: 4px solid var(--usmp-primary);
-    padding-left: 1rem;
-    background-color: #f8fafc;
-    padding: 1rem;
-    border-radius: 0 8px 8px 0;
-}
-
-/* Status badge enhancements */
-.badge {
-    font-weight: 500;
-}
-
-.badge.fs-6 {
-    font-size: 0.9rem !important;
-    padding: 0.5rem 0.75rem;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
     .user-avatar-large {
-        width: 60px;
-        height: 60px;
-        font-size: 1.5rem;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--UNMSM-primary), var(--UNMSM-accent));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0 auto;
+        box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
     }
 
     .book-cover-detail {
-        max-width: 100px;
-        max-height: 150px;
+        max-width: 150px;
+        max-height: 200px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     }
 
-    .table-borderless {
-        font-size: 0.9rem;
+    .card {
+        border: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
     }
-}
 
-/* Animation for overdue items */
-@keyframes pulse-danger {
-    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
-    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
-}
+    .table-borderless td {
+        padding: 0.5rem 0;
+        border: none;
+    }
 
-.text-danger.fw-bold {
-    animation: pulse-danger 2s infinite;
-}
+    .loan-summary {
+        border-left: 4px solid var(--UNMSM-primary);
+        padding-left: 1rem;
+        background-color: #f8fafc;
+        padding: 1rem;
+        border-radius: 0 8px 8px 0;
+    }
 
-/* Button hover effects */
-.btn:hover {
-    transform: translateY(-1px);
-    transition: all 0.2s ease;
-}
+    /* Status badge enhancements */
+    .badge {
+        font-weight: 500;
+    }
 
-.btn-success:hover {
-    background: linear-gradient(135deg, #059669, #047857);
-}
+    .badge.fs-6 {
+        font-size: 0.9rem !important;
+        padding: 0.5rem 0.75rem;
+    }
 
-.btn-warning:hover {
-    background: linear-gradient(135deg, #d97706, #b45309);
-}
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .user-avatar-large {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+        }
 
-/* Modal enhancements */
-.modal-content {
-    border: none;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-}
+        .book-cover-detail {
+            max-width: 100px;
+            max-height: 150px;
+        }
 
-.modal-header {
-    border-bottom: 2px solid #f1f5f9;
-}
+        .table-borderless {
+            font-size: 0.9rem;
+        }
+    }
 
-.modal-footer {
-    border-top: 2px solid #f1f5f9;
-}
+    /* Animation for overdue items */
+    @keyframes pulse-danger {
+        0% {
+            box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4);
+        }
+
+        70% {
+            box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+        }
+    }
+
+    .text-danger.fw-bold {
+        animation: pulse-danger 2s infinite;
+    }
+
+    /* Button hover effects */
+    .btn:hover {
+        transform: translateY(-1px);
+        transition: all 0.2s ease;
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(135deg, #059669, #047857);
+    }
+
+    .btn-warning:hover {
+        background: linear-gradient(135deg, #d97706, #b45309);
+    }
+
+    /* Modal enhancements */
+    .modal-content {
+        border: none;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+        border-bottom: 2px solid #f1f5f9;
+    }
+
+    .modal-footer {
+        border-top: 2px solid #f1f5f9;
+    }
 </style>
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
     // Auto-calculate suggested extension date
     const dueDateInput = document.getElementById('new_due_date');
     if (dueDateInput) {
