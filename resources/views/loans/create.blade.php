@@ -73,7 +73,7 @@
                                     <option value="">Seleccionar libro...</option>
                                     @foreach($books as $book)
                                         <option value="{{ $book->id }}"
-                                                {{ old('book_id') == $book->id ? 'selected' : '' }}>
+                                                {{ old('book_id', $selectedBookId) == $book->id ? 'selected' : '' }}>
                                             {{ $book->title }} ({{ $book->author }})
                                         </option>
                                     @endforeach
@@ -101,17 +101,30 @@
 
                             <!-- Fecha de Devolución -->
                             <div class="col-md-6 mb-3">
-                                <label for="return_date" class="form-label required">Fecha de Devolución</label>
+                                <label for="due_date" class="form-label required">Fecha de Devolución</label>
                                 <input type="date"
-                                       class="form-control @error('return_date') is-invalid @enderror"
-                                       id="return_date"
-                                       name="return_date"
-                                       value="{{ old('return_date') }}"
+                                       class="form-control @error('due_date') is-invalid @enderror"
+                                       id="due_date"
+                                       name="due_date"
+                                       value="{{ old('due_date') }}"
                                        required>
-                                @error('return_date')
+                                @error('due_date')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                        </div>
+
+                        <!-- Notas -->
+                        <div class="mb-3">
+                            <label for="notes" class="form-label">Notas (opcional)</label>
+                            <textarea class="form-control @error('notes') is-invalid @enderror"
+                                      id="notes"
+                                      name="notes"
+                                      rows="2"
+                                      maxlength="500">{{ old('notes') }}</textarea>
+                            @error('notes')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="d-flex justify-content-end">
