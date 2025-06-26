@@ -47,23 +47,96 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * The attributes that should have default values.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'role' => 'student',
+    ];
+
+    /**
+     * Get the loans for the user.
+     */
     public function loans()
     {
         return $this->hasMany(Loan::class);
     }
 
+    /**
+     * Get the active loans for the user.
+     */
     public function activeLoans()
     {
         return $this->hasMany(Loan::class)->where('status', 'active');
     }
 
+    /**
+     * Check if user is a librarian.
+     *
+     * @return bool
+     */
     public function isLibrarian()
     {
         return $this->role === 'librarian';
     }
 
+    /**
+     * Check if user is an admin.
+     *
+     * @return bool
+     */
     public function isAdmin()
     {
         return $this->role === 'admin';
+    }
+
+    /**
+     * Check if user is a student.
+     *
+     * @return bool
+     */
+    public function isStudent()
+    {
+        return $this->role === 'student';
+    }
+
+    /**
+     * Get user's full role name.
+     *
+     * @return string
+     */
+    public function getRoleNameAttribute()
+    {
+        $roles = [
+            'student' => 'Estudiante',
+            'librarian' => 'Bibliotecario',
+            'admin' => 'Administrador'
+        ];
+
+        return $roles[$this->role] ?? 'Estudiante';
+    }
+
+    /**
+     * Scope to filter users by role.
+     */
+    public function scopeByRole($query, $role)
+    {
+        return $query->where('role', $role);
+    }
+
+    /**
+     * Get overdue loans count.
+     *
+     * @return int
+     */
+    public function getOverdueLoansCountAttribute()
+    {
+        return $this->loans()
+            ->where('status', 'active')
+            ->where('due_date', '<', now())
+            ->count();
     }
 }

@@ -67,15 +67,42 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'student_code' => $this->generateStudentCode(),
+            'student_code' => $this->generateUniqueStudentCode(),
             'password' => Hash::make($data['password']),
+            'role' => 'student', // Asignar rol por defecto
         ]);
     }
 
-    private function generateStudentCode(): string
+    /**
+     * Generate a unique student code
+     *
+     * @return string
+     */
+    private function generateUniqueStudentCode(): string
     {
-        $year = now()->format('Y');
-        $randomNumber = Str::padLeft(mt_rand(1, 999), 3, '0');
-        return "LIB-{$year}-{$randomNumber}";
+        $maxAttempts = 10;
+        $attempts = 0;
+
+        do {
+            $attempts++;
+
+            $year = now()->format('Y');
+            $timestamp = substr(now()->timestamp, -4);
+            $randomNumber = str_pad(mt_rand(1, 9999), 4, '0', STR_PAD_LEFT);
+
+            $studentCode = "LIB-{$year}-{$timestamp}{$randomNumber}";
+
+            //  si ya existe
+            $exists = User::where('student_code', $studentCode)->exists();
+
+            if (!$exists) {
+                return $studentCode;
+            }
+        } while ($attempts < $maxAttempts);
+
+        $uuid = Str::uuid()->toString();
+        $shortUuid = substr(str_replace('-', '', $uuid), 0, 8);
+
+        return "LIB-{$year}-{$shortUuid}";
     }
 }
