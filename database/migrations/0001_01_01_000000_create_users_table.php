@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('student_code')->unique()->after('email');
+             $table->string('student_code')->nullable()->unique()->after('email');
             $table->enum('role', ['student', 'librarian', 'admin'])->default('student')->after('student_code'); // Nuevo campo
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

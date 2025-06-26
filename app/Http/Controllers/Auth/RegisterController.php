@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -66,7 +67,15 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'student_code' => $this->generateStudentCode(),
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    private function generateStudentCode(): string
+    {
+        $year = now()->format('Y');
+        $randomNumber = Str::padLeft(mt_rand(1, 999), 3, '0');
+        return "LIB-{$year}-{$randomNumber}";
     }
 }
