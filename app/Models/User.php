@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'student_code',
+        'role',
     ];
 
     /**
@@ -44,5 +46,24 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function loans()
+    {
+        return $this->hasMany(Loan::class);
+    }
+
+    public function activeLoans()
+    {
+        return $this->hasMany(Loan::class)->where('status', 'active');
+    }
+
+    public function isLibrarian()
+    {
+        return $this->role === 'librarian';
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
     }
 }
