@@ -33,7 +33,7 @@ Route::get('/catalogo/{book}', [BookController::class, 'show'])->name('catalog.s
 Route::middleware(['auth'])->group(function () {
 
     // Dashboard principal (temporal - redirige a books)
-    Route::get('/dashboard', function () {
+    Route::get('/dashboard', function() {
         return redirect()->route('books.index');
     })->name('dashboard');
 
@@ -43,6 +43,9 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::resource('books', BookController::class);
+
+    // Ruta para solicitar préstamo (estudiantes)
+    Route::post('/books/{book}/request-loan', [BookController::class, 'requestLoan'])->name('books.request-loan');
 
     /*
     |--------------------------------------------------------------------------
@@ -57,15 +60,15 @@ Route::middleware(['auth'])->group(function () {
     | Rutas temporales para el menú (redirigen a books por ahora)
     |--------------------------------------------------------------------------
     */
-    Route::get('/categories', function () {
+    Route::get('/categories', function() {
         return redirect()->route('books.index')->with('info', 'Módulo de categorías en desarrollo');
     })->name('categories.index');
 
-    Route::get('/users', function () {
+    Route::get('/users', function() {
         return redirect()->route('books.index')->with('info', 'Módulo de usuarios en desarrollo');
     })->name('users.index');
 
-    Route::get('/reports', function () {
+    Route::get('/reports', function() {
         return redirect()->route('books.index')->with('info', 'Módulo de reportes en desarrollo');
     })->name('reports.index');
 
@@ -74,7 +77,7 @@ Route::middleware(['auth'])->group(function () {
     | Perfil de Usuario (temporal)
     |--------------------------------------------------------------------------
     */
-    Route::get('/profile/edit', function () {
+    Route::get('/profile/edit', function() {
         return view('profile.edit', ['user' => auth()->user()]);
     })->name('profile.edit');
 
@@ -84,6 +87,7 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/api/stats', [HomeController::class, 'stats'])->name('api.stats');
+
 });
 
 /*
