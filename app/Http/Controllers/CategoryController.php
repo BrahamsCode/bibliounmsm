@@ -12,7 +12,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::orderBy('name')->paginate(15);
+        $categories = Category::withCount('books')
+            ->orderBy('name')
+            ->paginate(15);
+
         return view('categories.index', compact('categories'));
     }
 
@@ -31,6 +34,7 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100|unique:categories,name',
+            'description' => 'nullable|string|max:255',
         ]);
 
         Category::create($validated);
@@ -42,9 +46,32 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show(Category $category, Request $request)
     {
-        return view('categories.show', compact('category'));
+        // Cargar el conteo de libros para mostrar estadísticas
+        $category->loadCount('books');
+
+        // Obtener los libros de la categoría con ordenamiento opcional
+        $query = $category->books();
+
+        // Aplicar ordenamiento basado en parámetro de la URL
+        $sort = $request->get('sort', 'title');
+        switch ($sort) {
+            case 'author':
+                $query->orderBy('author');
+                break;
+            case 'created_at':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'title':
+            default:
+                $query->orderBy('title');
+                break;
+        }
+
+        $books = $query->paginate(10)->appends($request->query());
+
+        return view('categories.show', compact('category', 'books'));
     }
 
     /**
@@ -52,6 +79,9 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
+        // Cargar el conteo de libros para mostrar información en la vista
+        $category->loadCount('books');
+
         return view('categories.edit', compact('category'));
     }
 
@@ -62,6 +92,7 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100|unique:categories,name,' . $category->id,
+            'description' => 'nullable|string|max:255',
         ]);
 
         $category->update($validated);
@@ -75,6 +106,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        // Verificar si la categoría tiene libros asociados
+        if ($category->books()->count() > 0) {
+            return redirect()->route('categories.index')
+                ->with('error', 'No se puede eliminar la categoría porque tiene libros asociados.');
+        }
+
         $category->delete();
 
         return redirect()->route('categories.index')

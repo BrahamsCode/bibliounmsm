@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,13 @@ Route::middleware(['auth'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
+    | Gestión de Categorías (Solo Admin/Bibliotecarios)
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('categories', CategoryController::class);
+
+    /*
+    |--------------------------------------------------------------------------
     | Módulo de Reportes (Solo Admin/Bibliotecarios)
     |--------------------------------------------------------------------------
     */
@@ -79,13 +87,9 @@ Route::middleware(['auth'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Rutas temporales para el menú (redirigen a books por ahora)
+    | Usuarios (temporal)
     |--------------------------------------------------------------------------
     */
-    Route::get('/categories', function() {
-        return redirect()->route('books.index')->with('info', 'Módulo de categorías en desarrollo');
-    })->name('categories.index');
-
     Route::get('/users', function() {
         return redirect()->route('books.index')->with('info', 'Módulo de usuarios en desarrollo');
     })->name('users.index');

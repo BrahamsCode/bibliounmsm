@@ -122,27 +122,13 @@ class BookController extends Controller
     }
 
     /**
-     * Public catalog view (for non-authenticated users)
-     */
-    public function publicIndex(Request $request)
-    {
-        return $this->index($request);
-    }
-
-    /**
-     * Public book details (for non-authenticated users)
-     */
-    public function publicShow(Book $book)
-    {
-        return $this->show($book);
-    }
-
-    /**
      * Admin/Librarian: Create new book
      */
     public function create()
     {
-        $this->authorize('create', Book::class);
+        if (!auth()->user()->isAdmin() && !auth()->user()->isLibrarian()) {
+            abort(403, 'No tienes permisos para crear libros.');
+        }
 
         $categories = Category::orderBy('name')->get();
         return view('books.create', compact('categories'));
@@ -153,7 +139,9 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create', Book::class);
+        if (!auth()->user()->isAdmin() && !auth()->user()->isLibrarian()) {
+            abort(403, 'No tienes permisos para crear libros.');
+        }
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -182,7 +170,9 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        $this->authorize('update', $book);
+        if (!auth()->user()->isAdmin() && !auth()->user()->isLibrarian()) {
+            abort(403, 'No tienes permisos para editar libros.');
+        }
 
         $categories = Category::orderBy('name')->get();
         return view('books.edit', compact('book', 'categories'));
@@ -193,7 +183,9 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        $this->authorize('update', $book);
+        if (!auth()->user()->isAdmin() && !auth()->user()->isLibrarian()) {
+            abort(403, 'No tienes permisos para actualizar libros.');
+        }
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -211,7 +203,7 @@ class BookController extends Controller
 
         $book->update($validated);
 
-        return redirect()->route('books.index')
+        return redirect()->route('books.show', $book)
             ->with('success', 'Libro actualizado exitosamente.');
     }
 
@@ -220,7 +212,9 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        $this->authorize('delete', $book);
+        if (!auth()->user()->isAdmin() && !auth()->user()->isLibrarian()) {
+            abort(403, 'No tienes permisos para eliminar libros.');
+        }
 
         if ($book->activeLoans()->count() > 0) {
             return redirect()->route('books.index')
