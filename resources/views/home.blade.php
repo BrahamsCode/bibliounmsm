@@ -27,7 +27,7 @@
                             <div class="col-md-8">
                                 <h4 class="text-primary mb-3">¡Hola, {{ Auth::user()->name }}!</h4>
                                 <p class="lead">Tu registro ha sido exitoso. Ahora puedes acceder a todos los servicios
-                                    de la biblioteca digital de la Universidad San Martín de Porres.</p>
+                                    de la biblioteca digital de la Universidad San Marcos.</p>
 
                                 <div class="features-list mb-4">
                                     <h6 class="fw-semibold mb-3">¿Qué puedes hacer ahora?</h6>

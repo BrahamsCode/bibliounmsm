@@ -36,12 +36,8 @@
                         <span class="input-group-text">
                             <i class="bi bi-search"></i>
                         </span>
-                        <input type="text"
-                               class="form-control"
-                               id="search"
-                               name="search"
-                               value="{{ request('search') }}"
-                               placeholder="Título, autor o ISBN...">
+                        <input type="text" class="form-control" id="search" name="search"
+                            value="{{ request('search') }}" placeholder="Título, autor o ISBN...">
                     </div>
                 </div>
 
@@ -50,8 +46,7 @@
                     <select class="form-select" id="category" name="category">
                         <option value="">Todas las categorías</option>
                         @foreach($categories as $category)
-                        <option value="{{ $category->id }}"
-                                {{ request('category') == $category->id ? 'selected' : '' }}>
+                        <option value="{{ $category->id }}" {{ request('category')==$category->id ? 'selected' : '' }}>
                             {{ $category->name }}
                         </option>
                         @endforeach
@@ -62,7 +57,7 @@
                     <label for="available" class="form-label">Disponibilidad</label>
                     <select class="form-select" id="available" name="available">
                         <option value="">Todos</option>
-                        <option value="1" {{ request('available') == '1' ? 'selected' : '' }}>
+                        <option value="1" {{ request('available')=='1' ? 'selected' : '' }}>
                             Solo disponibles
                         </option>
                     </select>
@@ -89,13 +84,13 @@
                     <i class="bi bi-info-circle me-1"></i>
                     Filtros activos:
                     @if(request('search'))
-                        <span class="badge bg-primary">Búsqueda: "{{ request('search') }}"</span>
+                    <span class="badge bg-primary">Búsqueda: "{{ request('search') }}"</span>
                     @endif
                     @if(request('category'))
-                        <span class="badge bg-success">Categoría</span>
+                    <span class="badge bg-success">Categoría</span>
                     @endif
                     @if(request('available'))
-                        <span class="badge bg-info">Solo disponibles</span>
+                    <span class="badge bg-info">Solo disponibles</span>
                     @endif
                 </small>
             </div>
@@ -167,47 +162,47 @@
                             </a>
 
                             @auth
-                                @if(auth()->user()->isStudent())
-                                    @if($book->isAvailable())
-                                        @php
-                                        $userHasActiveLoan = $book->activeLoans()
-                                            ->where('user_id', auth()->id())
-                                            ->exists();
-                                        @endphp
+                            @if(auth()->user()->isStudent())
+                            @if($book->isAvailable())
+                            @php
+                            $userHasActiveLoan = $book->activeLoans()
+                            ->where('user_id', auth()->id())
+                            ->exists();
+                            @endphp
 
-                                        @if(!$userHasActiveLoan)
-                                        <form action="{{ route('books.request-loan', $book) }}" method="POST">
-                                            @csrf
-                                            <button type="submit" class="btn btn-success btn-sm">
-                                                <i class="bi bi-bookmark-plus me-1"></i>
-                                                Solicitar Préstamo
-                                            </button>
-                                        </form>
-                                        @else
-                                        <button class="btn btn-info btn-sm" disabled>
-                                            <i class="bi bi-check-circle me-1"></i>
-                                            Ya prestado
-                                        </button>
-                                        @endif
-                                    @else
-                                    <button class="btn btn-secondary btn-sm" disabled>
-                                        <i class="bi bi-x-circle me-1"></i>
-                                        No disponible
-                                    </button>
-                                    @endif
-                                @endif
-
-                                @if(auth()->user()->isAdmin() || auth()->user()->isLibrarian())
-                                    <a href="{{ route('books.edit', $book) }}" class="btn btn-warning btn-sm">
-                                        <i class="bi bi-pencil me-1"></i>
-                                        Editar
-                                    </a>
-                                @endif
+                            @if(!$userHasActiveLoan)
+                            <form action="{{ route('books.request-loan', $book) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    <i class="bi bi-bookmark-plus me-1"></i>
+                                    Solicitar Préstamo
+                                </button>
+                            </form>
                             @else
-                                <a href="{{ route('login') }}" class="btn btn-info btn-sm">
-                                    <i class="bi bi-person-check me-1"></i>
-                                    Iniciar sesión
-                                </a>
+                            <button class="btn btn-info btn-sm" disabled>
+                                <i class="bi bi-check-circle me-1"></i>
+                                Ya prestado
+                            </button>
+                            @endif
+                            @else
+                            <button class="btn btn-secondary btn-sm" disabled>
+                                <i class="bi bi-x-circle me-1"></i>
+                                No disponible
+                            </button>
+                            @endif
+                            @endif
+
+                            @if(auth()->user()->isAdmin() || auth()->user()->isLibrarian())
+                            <a href="{{ route('books.edit', $book) }}" class="btn btn-warning btn-sm">
+                                <i class="bi bi-pencil me-1"></i>
+                                Editar
+                            </a>
+                            @endif
+                            @else
+                            <a href="{{ route('login') }}" class="btn btn-info btn-sm">
+                                <i class="bi bi-person-check me-1"></i>
+                                Iniciar sesión
+                            </a>
                             @endauth
                         </div>
                     </div>
@@ -224,25 +219,28 @@
             <ul class="pagination">
                 {{-- Botón Anterior --}}
                 @if ($books->onFirstPage())
-                    <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
                 @else
-                    <li class="page-item"><a class="page-link" href="{{ $books->appends(request()->query())->previousPageUrl() }}">Anterior</a></li>
+                <li class="page-item"><a class="page-link"
+                        href="{{ $books->appends(request()->query())->previousPageUrl() }}">Anterior</a></li>
                 @endif
 
                 {{-- Números de página --}}
                 @foreach(range(1, $books->lastPage()) as $page)
-                    @if($page == $books->currentPage())
-                        <li class="page-item active"><span class="page-link">{{ $page }}</span></li>
-                    @else
-                        <li class="page-item"><a class="page-link" href="{{ $books->appends(request()->query())->url($page) }}">{{ $page }}</a></li>
-                    @endif
+                @if($page == $books->currentPage())
+                <li class="page-item active"><span class="page-link">{{ $page }}</span></li>
+                @else
+                <li class="page-item"><a class="page-link"
+                        href="{{ $books->appends(request()->query())->url($page) }}">{{ $page }}</a></li>
+                @endif
                 @endforeach
 
                 {{-- Botón Siguiente --}}
                 @if ($books->hasMorePages())
-                    <li class="page-item"><a class="page-link" href="{{ $books->appends(request()->query())->nextPageUrl() }}">Siguiente</a></li>
+                <li class="page-item"><a class="page-link"
+                        href="{{ $books->appends(request()->query())->nextPageUrl() }}">Siguiente</a></li>
                 @else
-                    <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+                <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
                 @endif
             </ul>
         </nav>
@@ -380,7 +378,7 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
     // Confirmación para solicitud de préstamo
     const loanForms = document.querySelectorAll('form[action*="request-loan"]');
     loanForms.forEach(form => {
