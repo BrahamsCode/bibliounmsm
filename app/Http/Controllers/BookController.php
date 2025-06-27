@@ -19,12 +19,12 @@ class BookController extends Controller
         $query = Book::with('category');
 
         // Búsqueda
-        if ($request->has('search')) {
-            $search = $request->get('search');
+        if ($request->has('search') && !empty($request->get('search'))) {
+            $search = strtolower($request->get('search'));
             $query->where(function ($q) use ($search) {
-                $q->where('title', 'ILIKE', "%{$search}%")
-                    ->orWhere('author', 'ILIKE', "%{$search}%")
-                    ->orWhere('isbn', 'ILIKE', "%{$search}%");
+                $q->whereRaw('LOWER(title) LIKE ?', ["%{$search}%"])
+                    ->orWhereRaw('LOWER(author) LIKE ?', ["%{$search}%"])
+                    ->orWhereRaw('LOWER(isbn) LIKE ?', ["%{$search}%"]);
             });
         }
 

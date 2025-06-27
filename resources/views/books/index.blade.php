@@ -36,8 +36,12 @@
                         <span class="input-group-text">
                             <i class="bi bi-search"></i>
                         </span>
-                        <input type="text" class="form-control" id="search" name="search"
-                            value="{{ request('search') }}" placeholder="Título, autor o ISBN...">
+                        <input type="text"
+                               class="form-control"
+                               id="search"
+                               name="search"
+                               value="{{ request('search') }}"
+                               placeholder="Título, autor o ISBN...">
                     </div>
                 </div>
 
@@ -46,7 +50,8 @@
                     <select class="form-select" id="category" name="category">
                         <option value="">Todas las categorías</option>
                         @foreach($categories as $category)
-                        <option value="{{ $category->id }}" {{ request('category')==$category->id ? 'selected' : '' }}>
+                        <option value="{{ $category->id }}"
+                                {{ request('category') == $category->id ? 'selected' : '' }}>
                             {{ $category->name }}
                         </option>
                         @endforeach
@@ -57,7 +62,7 @@
                     <label for="available" class="form-label">Disponibilidad</label>
                     <select class="form-select" id="available" name="available">
                         <option value="">Todos</option>
-                        <option value="1" {{ request('available')=='1' ? 'selected' : '' }}>
+                        <option value="1" {{ request('available') == '1' ? 'selected' : '' }}>
                             Solo disponibles
                         </option>
                     </select>
@@ -80,10 +85,32 @@
                     <i class="bi bi-x-circle me-1"></i>
                     Limpiar filtros
                 </a>
+                <small class="text-muted ms-2">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Filtros activos:
+                    @if(request('search'))
+                        <span class="badge bg-primary">Búsqueda: "{{ request('search') }}"</span>
+                    @endif
+                    @if(request('category'))
+                        <span class="badge bg-success">Categoría</span>
+                    @endif
+                    @if(request('available'))
+                        <span class="badge bg-info">Solo disponibles</span>
+                    @endif
+                </small>
             </div>
             @endif
         </div>
     </div>
+
+    <!-- Results Info -->
+    @if($books->count() > 0)
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="text-muted">
+            Mostrando {{ $books->firstItem() }} - {{ $books->lastItem() }} de {{ $books->total() }} resultados
+        </div>
+    </div>
+    @endif
 
     <!-- Books Grid -->
     @if($books->count() > 0)
@@ -133,52 +160,54 @@
 
                     <div class="mt-3">
                         <div class="d-grid gap-2">
+                            <!-- Ver Detalles (para todos) -->
                             <a href="{{ route('books.show', $book) }}" class="btn btn-outline-primary btn-sm">
                                 <i class="bi bi-eye me-1"></i>
                                 Ver Detalles
                             </a>
 
                             @auth
-                            @if(auth()->user()->isStudent() && $book->isAvailable())
-                            @php
-                            $userHasActiveLoan = $book->activeLoans()
-                            ->where('user_id', auth()->id())
-                            ->exists();
-                            @endphp
+                                @if(auth()->user()->isStudent())
+                                    @if($book->isAvailable())
+                                        @php
+                                        $userHasActiveLoan = $book->activeLoans()
+                                            ->where('user_id', auth()->id())
+                                            ->exists();
+                                        @endphp
 
-                            @if(!$userHasActiveLoan)
-                            <form action="{{ route('books.request-loan', $book) }}" method="POST"
-                                onsubmit="return confirm('¿Estás seguro de que quieres solicitar este libro en préstamo?')">
-                                @csrf
-                                <button type="submit" class="btn btn-success btn-sm">
-                                    <i class="bi bi-bookmark-plus me-1"></i>
-                                    Solicitar Préstamo
-                                </button>
-                            </form>
-                            @else
-                            <button class="btn btn-info btn-sm" disabled>
-                                <i class="bi bi-check-circle me-1"></i>
-                                Ya lo tienes prestado
-                            </button>
-                            @endif
-                            @elseif(auth()->user()->isStudent() && !$book->isAvailable())
-                            <button class="btn btn-secondary btn-sm" disabled>
-                                <i class="bi bi-x-circle me-1"></i>
-                                No disponible
-                            </button>
-                            @endif
+                                        @if(!$userHasActiveLoan)
+                                        <form action="{{ route('books.request-loan', $book) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <i class="bi bi-bookmark-plus me-1"></i>
+                                                Solicitar Préstamo
+                                            </button>
+                                        </form>
+                                        @else
+                                        <button class="btn btn-info btn-sm" disabled>
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            Ya prestado
+                                        </button>
+                                        @endif
+                                    @else
+                                    <button class="btn btn-secondary btn-sm" disabled>
+                                        <i class="bi bi-x-circle me-1"></i>
+                                        No disponible
+                                    </button>
+                                    @endif
+                                @endif
 
-                            @if(auth()->user()->isAdmin() || auth()->user()->isLibrarian())
-                            <a href="{{ route('books.edit', $book) }}" class="btn btn-warning btn-sm">
-                                <i class="bi bi-pencil me-1"></i>
-                                Editar
-                            </a>
-                            @endif
+                                @if(auth()->user()->isAdmin() || auth()->user()->isLibrarian())
+                                    <a href="{{ route('books.edit', $book) }}" class="btn btn-warning btn-sm">
+                                        <i class="bi bi-pencil me-1"></i>
+                                        Editar
+                                    </a>
+                                @endif
                             @else
-                            <a href="{{ route('login') }}" class="btn btn-info btn-sm">
-                                <i class="bi bi-person-check me-1"></i>
-                                Iniciar sesión para préstamo
-                            </a>
+                                <a href="{{ route('login') }}" class="btn btn-info btn-sm">
+                                    <i class="bi bi-person-check me-1"></i>
+                                    Iniciar sesión
+                                </a>
                             @endauth
                         </div>
                     </div>
@@ -188,10 +217,37 @@
         @endforeach
     </div>
 
-    <!-- Pagination -->
+    <!-- Paginación Simple -->
+    @if($books->hasPages())
     <div class="d-flex justify-content-center mt-5">
-        {{ $books->appends(request()->query())->links() }}
+        <nav aria-label="Navegación de libros">
+            <ul class="pagination">
+                {{-- Botón Anterior --}}
+                @if ($books->onFirstPage())
+                    <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                @else
+                    <li class="page-item"><a class="page-link" href="{{ $books->appends(request()->query())->previousPageUrl() }}">Anterior</a></li>
+                @endif
+
+                {{-- Números de página --}}
+                @foreach(range(1, $books->lastPage()) as $page)
+                    @if($page == $books->currentPage())
+                        <li class="page-item active"><span class="page-link">{{ $page }}</span></li>
+                    @else
+                        <li class="page-item"><a class="page-link" href="{{ $books->appends(request()->query())->url($page) }}">{{ $page }}</a></li>
+                    @endif
+                @endforeach
+
+                {{-- Botón Siguiente --}}
+                @if ($books->hasMorePages())
+                    <li class="page-item"><a class="page-link" href="{{ $books->appends(request()->query())->nextPageUrl() }}">Siguiente</a></li>
+                @else
+                    <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+                @endif
+            </ul>
+        </nav>
     </div>
+    @endif
     @else
     <!-- Empty State -->
     <div class="text-center py-5">
@@ -270,70 +326,27 @@
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
-    /* Filter section styling */
-    .card {
-        border: none;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        border-radius: 12px;
+    /* Paginación Custom */
+    .pagination {
+        --bs-pagination-color: #1e40af;
+        --bs-pagination-bg: #fff;
+        --bs-pagination-border-color: #dee2e6;
+        --bs-pagination-hover-color: #fff;
+        --bs-pagination-hover-bg: #1e40af;
+        --bs-pagination-hover-border-color: #1e40af;
+        --bs-pagination-active-color: #fff;
+        --bs-pagination-active-bg: #1e40af;
+        --bs-pagination-active-border-color: #1e40af;
+        --bs-pagination-disabled-color: #6c757d;
+        --bs-pagination-disabled-bg: #fff;
+        --bs-pagination-disabled-border-color: #dee2e6;
     }
 
-    .form-label {
-        font-weight: 600;
-        color: #374151;
+    .page-link {
+        padding: 0.5rem 0.75rem;
     }
 
-    .form-control,
-    .form-select {
-        border: 2px solid #e5e7eb;
-        border-radius: 8px;
-        transition: all 0.2s ease;
-    }
-
-    .form-control:focus,
-    .form-select:focus {
-        border-color: var(--UNMSM-primary);
-        box-shadow: 0 0 0 0.2rem rgba(30, 64, 175, 0.15);
-    }
-
-    .input-group-text {
-        background-color: #f9fafb;
-        border: 2px solid #e5e7eb;
-        border-right: none;
-        color: #6b7280;
-    }
-
-    /* Book actions styling */
-    .btn-sm {
-        padding: 0.375rem 0.75rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-    }
-
-    .btn-outline-primary:hover {
-        transform: translateY(-1px);
-    }
-
-    .btn-success {
-        background: linear-gradient(135deg, #10b981, #059669);
-        border: none;
-    }
-
-    .btn-success:hover {
-        background: linear-gradient(135deg, #059669, #047857);
-        transform: translateY(-1px);
-    }
-
-    .btn-info {
-        background: linear-gradient(135deg, #3b82f6, #2563eb);
-        border: none;
-    }
-
-    .btn-warning {
-        background: linear-gradient(135deg, #f59e0b, #d97706);
-        border: none;
-    }
-
-    /* Responsive adjustments */
+    /* Responsive */
     @media (max-width: 768px) {
         .book-cover-container {
             height: 180px;
@@ -343,15 +356,13 @@
             font-size: 0.95rem;
         }
 
-        .col-md-4,
-        .col-md-3,
-        .col-md-2 {
-            margin-bottom: 1rem;
-        }
-
         .btn-sm {
             font-size: 0.8rem;
             padding: 0.25rem 0.5rem;
+        }
+
+        .pagination {
+            font-size: 0.875rem;
         }
     }
 
@@ -364,94 +375,13 @@
             flex-direction: column;
             gap: 1rem;
         }
-
-        .book-card {
-            margin-bottom: 1rem;
-        }
-    }
-
-    /* Loading animation for buttons */
-    .btn[type="submit"]:disabled {
-        position: relative;
-        color: transparent !important;
-    }
-
-    .btn[type="submit"]:disabled::after {
-        content: '';
-        position: absolute;
-        width: 16px;
-        height: 16px;
-        top: 50%;
-        left: 50%;
-        margin-left: -8px;
-        margin-top: -8px;
-        border: 2px solid #ffffff;
-        border-radius: 50%;
-        border-top-color: transparent;
-        animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    /* Enhanced hover effects */
-    .book-card:hover .card-title {
-        color: var(--UNMSM-primary) !important;
-    }
-
-    .book-card:hover .availability-badge .badge {
-        transform: scale(1.05);
-    }
-
-    /* Pagination styling */
-    .pagination {
-        margin-bottom: 0;
-    }
-
-    .page-link {
-        color: var(--UNMSM-primary);
-        border: 1px solid #e5e7eb;
-        padding: 0.5rem 0.75rem;
-    }
-
-    .page-link:hover {
-        color: white;
-        background-color: var(--UNMSM-primary);
-        border-color: var(--UNMSM-primary);
-    }
-
-    .page-item.active .page-link {
-        background-color: var(--UNMSM-primary);
-        border-color: var(--UNMSM-primary);
     }
 </style>
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    // Auto-submit form on filter change (optional)
-    const filterSelects = document.querySelectorAll('#category, #available');
-    filterSelects.forEach(select => {
-        select.addEventListener('change', function() {
-            // Uncomment next line if you want auto-submit on filter change
-            // this.closest('form').submit();
-        });
-    });
-
-    // Enhanced search functionality
-    const searchInput = document.getElementById('search');
-    if (searchInput) {
-        let searchTimeout;
-        searchInput.addEventListener('input', function() {
-            clearTimeout(searchTimeout);
-            // Add loading indicator or debounced search here if needed
-        });
-    }
-
-    // Confirm loan requests
+document.addEventListener('DOMContentLoaded', function() {
+    // Confirmación para solicitud de préstamo
     const loanForms = document.querySelectorAll('form[action*="request-loan"]');
     loanForms.forEach(form => {
         form.addEventListener('submit', function(e) {
@@ -459,17 +389,6 @@
             if (!confirm(`¿Estás seguro de que quieres solicitar el libro "${bookTitle}" en préstamo?`)) {
                 e.preventDefault();
             }
-        });
-    });
-
-    // Loading state for loan buttons
-    const loanButtons = document.querySelectorAll('button[type="submit"]');
-    loanButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            this.disabled = true;
-            setTimeout(() => {
-                this.disabled = false;
-            }, 3000); // Re-enable after 3 seconds as fallback
         });
     });
 });
